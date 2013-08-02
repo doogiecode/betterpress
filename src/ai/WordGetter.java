@@ -5,7 +5,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class WordGetter {
-	public static Set<int[][]> getPlays(char[][] letterBoard, Set<String> dict) {
+	public static Set<int[][]> getPlays(char[][] letterBoard, HashSet<String> dict) {
+	    System.out.println("[WordGetter] Number of words in dictionary: " + dict.size());
 		HashSet<int[][]> plays = new HashSet<int[][]>();
 		for (String word : dict) {
 			plays.addAll(canMake(letterBoard, word, 0,
@@ -33,7 +34,7 @@ public class WordGetter {
 					copyBoard = letterBoard;
 					copyBoard[i][j] = ' ';
 					updatedPlay[index][0] = i;
-					updatedPlay[index][0] = j;
+					updatedPlay[index][1] = j;
 					plays.addAll(canMake(copyBoard, word, index + 1,
 							updatedPlay));
 					copyBoard[i][j] = letterBoard[i][j];
