@@ -283,6 +283,9 @@ public class Board {
 
 	public static void main(String[] args) {
 		Board board = new Board(true);
+		board.printColors();
+		board.printLetters();
+		board.betterPrint();
 		
 		// will currently fail because the Player objects are never initialized
 		board.playOneGame();
