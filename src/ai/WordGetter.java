@@ -6,7 +6,8 @@ import java.util.Set;
 import board.Board;
 
 public class WordGetter {
-	public static Set<int[][]> getPlays(char[][] letterBoard, Set<String> dict) {
+	public static Set<int[][]> getPlays(char[][] letterBoard, HashSet<String> dict) {
+	    System.out.println("[WordGetter] Number of words in dictionary: " + dict.size());
 		HashSet<int[][]> plays = new HashSet<int[][]>();
 		
 		// Iterate through the dictionary, add all the ways to make all the words in it
@@ -42,7 +43,8 @@ public class WordGetter {
 					copyBoard = letterBoard;
 					copyBoard[i][j] = ' ';
 					updatedPlay[index][0] = i;
-					updatedPlay[index][0] = j;
+
+					updatedPlay[index][1] = j;
 					// add everything our submethods find to the set of plays
 					plays.addAll(canMake(Board.deepCopy5x5Array(copyBoard), word, index + 1,
 							updatedPlay));
