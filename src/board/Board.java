@@ -205,7 +205,7 @@ public class Board {
 				}
 			}
 			
-			updateLocked();
+			this.colorBoard = updateLocked(this.colorBoard);
 			switchTurns();
 			if (verbose) {
 				System.out.println("player " + turn + " played " + word);
@@ -263,7 +263,7 @@ public class Board {
 	}
 
 	// This function is ugly. Do not look at it.
-	private void updateLocked() {
+	public static char[][] updateLocked(char[][] colorBoard) {
 		char[][] newColorBoard = new char[5][5];
 		for (int i = 0; i < 5; ++i) {
 			for (int j = 0; j < 5; ++j) {
@@ -297,7 +297,7 @@ public class Board {
 				}
 			}
 		}
-		colorBoard = newColorBoard;
+		return newColorBoard;
 	}
 	
 	public String whatWordDoesThisPlayMake(int[][] play) {

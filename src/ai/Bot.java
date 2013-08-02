@@ -61,5 +61,26 @@ public class Bot implements Player {
         int differenceInBounds = upperBound - lowerBound;
         return (int) (Math.floor(Math.random() * differenceInBounds) + lowerBound);
     }
+    
+    private int count(char[][] board, char target) {
+    	int count = 0;
+    	for (int i = 0; i < 5; ++i) {
+    		for (int j = 0; j < 5; ++j) {
+        		if (target == board[i][j]) {
+        			++count;
+        		}
+        	}
+    	}
+    	return count;
+    }
+    
+    private ScoredWord totalDarkMyColor(char[][] letterBoard, char[][] colorBoard, int[][] move, char color) {
+    	/*
+    	char target = Character.toUpperCase(color);
+    	colorBoard = Board.updateLocked(colorBoard)
+    	int score = count()
+    	*/
+    	return null;
+    }
 
 }
