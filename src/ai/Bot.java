@@ -37,6 +37,8 @@ public class Bot implements Player {
         Iterator<int[][]> i = board.getPlayableWords().iterator();
         
         int[][] wordToPlay = {{y}, {x}};
+        String wordLiteral = board.whatWordDoesThisPlayMake(wordToPlay);
+        System.out.println("[Bot] I might play: " + wordLiteral);
         
         return wordToPlay;
     }

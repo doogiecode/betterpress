@@ -31,7 +31,7 @@ public class Board {
 	private HashSet<String> dict;
 	
 	// words that have been played already
-	private HashSet<String> used;
+	private HashSet<String> usedWords;
 	int pass = 0;
 
 	// The two players, whether Bot or Human objects.
@@ -48,7 +48,7 @@ public class Board {
         random = new Random();
         this.verbose = verbose;
         this.dict = new HashSet<String>(100000);
-        this.used = new HashSet<String>();
+        this.usedWords = new HashSet<String>();
         BufferedReader br;
         try {
             br = new BufferedReader(isr);
@@ -203,8 +203,8 @@ public class Board {
 		}
 		
 		String word = new String(wordArray);
-		if (dict.contains(new String(wordArray)) && !used.contains(word)) {
-			used.add(word);
+		if (dict.contains(new String(wordArray)) && !usedWords.contains(word)) {
+			usedWords.add(word);
 			// Update colorboard to represent move
 			for (int[] loc : moves) {
 				char target = colorBoard[loc[0]][loc[1]];
@@ -239,9 +239,9 @@ public class Board {
 	// char returned is the winner, as determined by checkWinner. Will be ' ' until the game is over.
 	private char promptCurrentPlayer() {
 		if (turn == 'r') {
-			return playWord(redPlayer.provideMove(letterBoard, colorBoard, used, turn), turn);
+			return playWord(redPlayer.provideMove(letterBoard, colorBoard, usedWords, turn), turn);
 		} else {
-			return playWord(bluePlayer.provideMove(letterBoard, colorBoard, used, turn), turn);
+			return playWord(bluePlayer.provideMove(letterBoard, colorBoard, usedWords, turn), turn);
 		}
 	}
 	
@@ -320,12 +320,12 @@ public class Board {
 	public char[][] hypotheticalMove(int[][] move, char color) {
 		char[][] storedColorBoard = colorBoard;
 		char[][] returnBoard;
-		HashSet<String> storedUsed = used;
+		HashSet<String> storedUsed = usedWords;
 		playWord(move, color);
 		returnBoard = colorBoard;
 		colorBoard = storedColorBoard;
 		turn = color;
-		used = storedUsed;
+		usedWords = storedUsed;
 		return returnBoard;
 		
 	}
