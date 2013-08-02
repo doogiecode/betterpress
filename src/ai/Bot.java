@@ -4,16 +4,18 @@
  */
 package ai;
 
+import java.util.HashSet;
+
 
 /**
- * [[minimum of one sentence description on the class' responsibility.]]
+ * This class implements a bot that can play Letterpress.
  *
- * @author proffitt
+ * @author William Proffitt
  * @since Aug 2, 2013
  */
 public class Bot implements Player {
     
-    public int[][] provideMove(char[][] letterBoard, char[][] colorBoard) {
+    public int[][] provideMove(char[][] letterBoard, char[][] colorBoard, HashSet<String> usedWords, char turn) {
         int[][] wordToPlay = {{0}, {0}};
         return wordToPlay;
     }

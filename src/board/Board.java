@@ -11,8 +11,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
-import AI.Player;
-import AI.WordGetter;
+import ai.Player;
+import ai.WordGetter;
 
 public class Board {
 	private static char[][] letterBoard;
