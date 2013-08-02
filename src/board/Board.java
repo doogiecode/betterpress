@@ -73,12 +73,13 @@ public class Board {
                 this.colorBoard[i][j] = random.nextBoolean() ? 'r' : 'b';
             }
         }
-        System.out.println("letters: ");
-     
+        
         printLetters();
         
         this.playableWords = WordGetter.getPlays(getLetterBoard(), this.dict);
+        
         printLetters();
+        
         // Blue goes first because I said so
         turn = 'b';
     }
@@ -141,6 +142,7 @@ public class Board {
     }
 
     public void betterPrint() {
+        System.out.println("[Board] Board State: ");
 		for (int i = 0; i < 5; ++i) {
 			for (int j = 0; j < 5; ++j) {
 				char letter = Character.isLowerCase(colorBoard[i][j]) ? letterBoard[i][j] : Character.toUpperCase(letterBoard[i][j]);
@@ -157,7 +159,7 @@ public class Board {
 	}
 	
 	public void printLetters() {
-		System.out.println("letters: ");
+		System.out.println("[Board] Board Letters: ");
 		for (char[] row : this.letterBoard) {
 			for (char letter : row) {
 				System.out.print(letter + " ");
@@ -167,6 +169,7 @@ public class Board {
 	}
 	
 	public void printColors() {
+	    System.out.println("[Board] Board Colors: ");
 		for (char[] row : this.colorBoard) {
 			for (char letter : row) {
 				System.out.print(letter + " ");

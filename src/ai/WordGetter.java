@@ -19,9 +19,6 @@ public class WordGetter {
 		if (index == word.length()) {
 			return new HashSet<int[][]>();
 		}
-		System.out.println(word);
-		System.out.println(index);
-		System.out.println(Arrays.toString(play));
 
 		char[] wordarray = word.toCharArray();
 		char next = wordarray[index];
