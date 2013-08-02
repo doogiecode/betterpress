@@ -51,7 +51,7 @@ public class WordGetter {
 
 			}
 		}
-		// Return the result, as summed up above
+		// Return the result, as summed up abovee
 		return plays;
 	}
 }
