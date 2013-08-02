@@ -125,6 +125,16 @@ public class Board {
     public char[][] getLetterBoard() {
         return letterBoard;
     }
+    
+    public char[][] deepCopyLetterBoard() {
+    	char[][] copyBoard = new char[5][5];
+    	for (int i = 0; i < 5; ++i) {
+    		for (int j = 0; j < 5; ++j) {
+        		copyBoard[i][j] = letterBoard[i][j];
+        	}
+    	}
+    	return copyBoard;
+    }
   
     /**
      * @return the colorBoard
