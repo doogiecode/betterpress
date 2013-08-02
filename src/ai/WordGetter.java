@@ -24,7 +24,9 @@ public class WordGetter {
 			int index, int[][] play) {
 		// If we've already filled
 		if (index == word.length()) {
-			return new HashSet<int[][]>();
+			HashSet<int[][]> singlePlay = new HashSet<int[][]>();
+			singlePlay.add(play);
+			return singlePlay;
 		}
 
 		// Which character are we looking for a copy of in the letterboard?
