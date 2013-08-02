@@ -5,29 +5,32 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import ai.Player;
 import ai.WordGetter;
 
 public class Board {
-	private static char[][] letterBoard;
-	public char[][] colorBoard;
+
+    private char[][] letterBoard;
+	private char[][] colorBoard;
+	private Set<int[][]> playableWords;
 	boolean verbose;
 	
 	// used for generating random boards
-	Random random;
+	private Random random;
 	
 	// all words that are allowed, initialized from dictfile
-	HashSet<String> dict;
-	File dictfile = new File("/usr/share/dict/words");
+	private HashSet<String> dict;
 	
 	// words that have been played already
-	HashSet<String> used;
+	private HashSet<String> used;
 	int pass = 0;
 
 	// The two players, whether Bot or Human objects.
@@ -40,13 +43,14 @@ public class Board {
 	   // Constructor. Random characters, no players constructed yet. Blue goes first.
     // Dictionary is read in in this constructor, exception currently unhandled.
     public Board(boolean verbose) {
+        InputStreamReader isr = new InputStreamReader(getClass().getResourceAsStream("/resources/simpleDict.txt"));
         random = new Random();
         this.verbose = verbose;
-        HashSet<String> dict = new HashSet<String>(100000);
-        HashSet<String> used = new HashSet<String>();
+        this.dict = new HashSet<String>(100000);
+        this.used = new HashSet<String>();
         BufferedReader br;
         try {
-            br = new BufferedReader(new FileReader(dictfile));
+            br = new BufferedReader(isr);
 
             String nextline = "";
 
@@ -59,21 +63,52 @@ public class Board {
         }
 
         // Initialize with random
-        letterBoard = new char[5][5];
-        colorBoard = new char[5][5];
+        this.letterBoard = new char[5][5];
+        this.colorBoard = new char[5][5];
         for (int i = 0; i < 5; ++i) {
             for (int j = 0; j < 5; ++j) {
                 char fill = ((char) (random.nextInt(26) + 'a'));
-                letterBoard[i][j] = fill;
-                colorBoard[i][j] = random.nextBoolean() ? 'r' : 'b';
+                this.letterBoard[i][j] = fill;
+                this.colorBoard[i][j] = random.nextBoolean() ? 'r' : 'b';
             }
         }
+        
+        this.playableWords = WordGetter.getPlays(this.letterBoard, this.dict);
 
         // Blue goes first because I said so
         turn = 'b';
     }
+    
+    public HashSet<String> getDictionary() {
+        return this.dict;
+    }
+    
+    public void setDictionary(HashSet<String> dict) {
+        this.dict = dict;
+    }
+    
+    /**
+     * @return the letterBoard
+     */
+    public char[][] getLetterBoard() {
+        return letterBoard;
+    }
+  
+    /**
+     * @return the colorBoard
+     */
+    public char[][] getColorBoard() {
+        return colorBoard;
+    }
+	
+    /**
+     * @return the playableWords
+     */
+    public Set<int[][]> getPlayableWords() {
+        return playableWords;
+    }
 
-	public void betterPrint() {
+    public void betterPrint() {
 		for (int i = 0; i < 5; ++i) {
 			for (int j = 0; j < 5; ++j) {
 				char letter = Character.isLowerCase(colorBoard[i][j]) ? letterBoard[i][j] : Character.toUpperCase(letterBoard[i][j]);
