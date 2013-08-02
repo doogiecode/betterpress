@@ -6,6 +6,7 @@ package ai;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import board.Board;
 
@@ -25,6 +26,10 @@ public class Bot implements Player {
     }
     
     public int[][] provideMove(char[][] letterBoard, char[][] colorBoard, HashSet<String> usedWords, char turn) {
+        Set<int[][]> playableWords = board.getPlayableWords();
+        System.out.println("[Bot] Number of playable words: " + playableWords.size());
+        
+        
         Iterator<int[][]> i = board.getPlayableWords().iterator();
         
         int[][] wordToPlay = i.next(); 
