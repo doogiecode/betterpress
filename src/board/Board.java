@@ -70,13 +70,15 @@ public class Board {
         for (int i = 0; i < 5; ++i) {
             for (int j = 0; j < 5; ++j) {
                 this.letterBoard[i][j] = ((char) (random.nextInt(26) + 'a'));
-                this.colorBoard[i][j] = random.nextBoolean() ? 'r' : 'b';
+                // this.colorBoard[i][j] = random.nextBoolean() ? 'r' : 'b'; Board color randomization code
+                this.colorBoard[i][j] = '_';
             }
         }
         
         printLetters();
         
-        this.playableWords = WordGetter.getPlays(getLetterBoard(), this.dict);
+        char[][] letterBoardCopy = deepCopy5x5Array(this.letterBoard);
+        this.playableWords = WordGetter.getPlays(letterBoardCopy, this.dict);
         
         printLetters();
         
@@ -127,14 +129,14 @@ public class Board {
         return letterBoard;
     }
     
-    public char[][] deepCopyLetterBoard() {
-    	char[][] copyBoard = new char[5][5];
+    public char[][] deepCopy5x5Array(char[][] array) {
+    	char[][] copiedArray = new char[5][5];
     	for (int i = 0; i < 5; ++i) {
     		for (int j = 0; j < 5; ++j) {
-        		copyBoard[i][j] = letterBoard[i][j];
+        		copiedArray[i][j] = array[i][j];
         	}
     	}
-    	return copyBoard;
+    	return copiedArray;
     }
   
     /**
