@@ -129,7 +129,7 @@ public class Board {
         return letterBoard;
     }
     
-    public char[][] deepCopy5x5Array(char[][] array) {
+    public static char[][] deepCopy5x5Array(char[][] array) {
     	char[][] copiedArray = new char[5][5];
     	for (int i = 0; i < 5; ++i) {
     		for (int j = 0; j < 5; ++j) {
