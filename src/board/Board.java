@@ -309,6 +309,14 @@ public class Board {
 		colorBoard = newColorBoard;
 	}
 	
+	public String whatWordDoesThisPlayMake(int[][] play) {
+		char[] wordarray = new char[play.length];
+		for (int i = 0; i < play.length; ++i) {
+			wordarray[i] = letterBoard[ play[i][0] ][ play[i][1] ];
+		}
+		return new String(wordarray);
+	}
+	
 	// Stores the boardstate, plays move, returns current boardstate, reverts
 	public char[][] hypotheticalMove(int[][] move, char color) {
 		char[][] storedColorBoard = colorBoard;
