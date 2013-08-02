@@ -36,6 +36,42 @@ public class Board {
 
 	// Letter representing whose turn it is
 	private char turn;
+	
+	   // Constructor. Random characters, no players constructed yet. Blue goes first.
+    // Dictionary is read in in this constructor, exception currently unhandled.
+    public Board(boolean verbose) {
+        random = new Random();
+        this.verbose = verbose;
+        HashSet<String> dict = new HashSet<String>(100000);
+        HashSet<String> used = new HashSet<String>();
+        BufferedReader br;
+        try {
+            br = new BufferedReader(new FileReader(dictfile));
+
+            String nextline = "";
+
+            while ((nextline = br.readLine()) != null) {
+                dict.add(nextline);
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        // Initialize with random
+        letterBoard = new char[5][5];
+        colorBoard = new char[5][5];
+        for (int i = 0; i < 5; ++i) {
+            for (int j = 0; j < 5; ++j) {
+                char fill = ((char) (random.nextInt(26) + 'a'));
+                letterBoard[i][j] = fill;
+                colorBoard[i][j] = random.nextBoolean() ? 'r' : 'b';
+            }
+        }
+
+        // Blue goes first because I said so
+        turn = 'b';
+    }
 
 	public void betterPrint() {
 		for (int i = 0; i < 5; ++i) {
@@ -124,42 +160,6 @@ public class Board {
 		} else {
 			return playWord(bluePlayer.provideMove(letterBoard, colorBoard, used, turn), turn);
 		}
-	}
-	
-	// Constructor. Random characters, no players constructed yet. Blue goes first.
-	// Dictionary is read in in this constructor, exception currently unhandled.
-	public Board(boolean verbose) {
-		random = new Random();
-		this.verbose = verbose;
-		HashSet<String> dict = new HashSet<String>(100000);
-		HashSet<String> used = new HashSet<String>();
-		BufferedReader br;
-		try {
-			br = new BufferedReader(new FileReader(dictfile));
-
-			String nextline = "";
-
-			while ((nextline = br.readLine()) != null) {
-				dict.add(nextline);
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		// Initialize with random
-		letterBoard = new char[5][5];
-		colorBoard = new char[5][5];
-		for (int i = 0; i < 5; ++i) {
-			for (int j = 0; j < 5; ++j) {
-				char fill = ((char) (random.nextInt(26) + 'a'));
-				letterBoard[i][j] = fill;
-				colorBoard[i][j] = random.nextBoolean() ? 'r' : 'b';
-			}
-		}
-
-		// Blue goes first because I said so
-		turn = 'b';
 	}
 	
 	// returns the letter of who wins, or ' ' if no one has won yet.
