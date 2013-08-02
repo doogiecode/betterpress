@@ -197,14 +197,10 @@ public class Board {
 		} else {
 			pass = 0;
 		}
-		char[] wordArray = new char[moves.length];
-		for (int i = 0; i < moves.length; ++i) {
-			int[] loc = moves[i];
-			wordArray[i] = letterBoard[loc[0]][loc[1]];
-		}
 		
-		String word = new String(wordArray);
-		if (dict.contains(new String(wordArray)) && !used.contains(word)) {
+		
+		String word = whatWordDoesThisPlayMake(moves);
+		if (dict.contains(word) && !used.contains(word)) {
 			used.add(word);
 			// Update colorboard to represent move
 			for (int[] loc : moves) {
@@ -311,6 +307,8 @@ public class Board {
 	
 	public String whatWordDoesThisPlayMake(int[][] play) {
 		char[] wordarray = new char[play.length];
+		System.out.println(play.length);
+		System.out.println(play[0].length);
 		for (int i = 0; i < play.length; ++i) {
 			wordarray[i] = letterBoard[ play[i][0] ][ play[i][1] ];
 		}
