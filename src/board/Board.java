@@ -197,18 +197,19 @@ public class Board {
 		} else {
 			pass = 0;
 		}
-		char[] word = new char[moves.length];
+		char[] wordArray = new char[moves.length];
 		for (int i = 0; i < moves.length; ++i) {
 			int[] loc = moves[i];
-			word[i] = letterBoard[loc[0]][loc[1]];
+			wordArray[i] = letterBoard[loc[0]][loc[1]];
 		}
-
-		if (dict.contains(new String(word)) && !used.contains(word)) {
-			used.add(new String(word));
+		
+		String word = new String(wordArray);
+		if (dict.contains(new String(wordArray)) && !used.contains(word)) {
+			used.add(word);
 			// Update colorboard to represent move
 			for (int[] loc : moves) {
 				char target = colorBoard[loc[0]][loc[1]];
-				if (Character.isLowerCase(target)) {
+				if (!Character.isUpperCase(target)) {
 					colorBoard[loc[0]][loc[1]] = playerChar;
 				}
 			}
@@ -216,7 +217,7 @@ public class Board {
 			updateLocked();
 			switchTurns();
 			if (verbose) {
-				System.out.println("player " + turn + " played " + new String(word));
+				System.out.println("player " + turn + " played " + word);
 				betterPrint();
 			}
 			
