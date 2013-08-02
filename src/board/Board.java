@@ -70,7 +70,6 @@ public class Board {
         for (int i = 0; i < 5; ++i) {
             for (int j = 0; j < 5; ++j) {
                 this.letterBoard[i][j] = ((char) (random.nextInt(26) + 'a'));
-                // this.colorBoard[i][j] = random.nextBoolean() ? 'r' : 'b'; Board color randomization code
                 this.colorBoard[i][j] = '_';
             }
         }

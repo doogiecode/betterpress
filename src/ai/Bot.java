@@ -31,14 +31,8 @@ public class Bot implements Player {
         System.out.println("[Bot] Number of playable words: " + playableWords.size());
         
         Random random = new Random();
-        
-        int yJava = random.nextInt(4);
-        int xJava = random.nextInt(4);
         int y = getRandomIntInRange(0, 4);
         int x = getRandomIntInRange(0, 4);
-        
-        System.out.println("[Bot] Battle between Java and Doogie: " + yJava + " (Java) vs. " +  y + " (Doogie)");
-
         
         Iterator<int[][]> i = board.getPlayableWords().iterator();
         
