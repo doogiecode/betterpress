@@ -190,13 +190,7 @@ public class Board {
 	}
 
 	// updates the board to reflect moves, if legal. else, prompts current player.
-	private char playWord(int[][] moves, char playerChar) {
-		if (moves.length == 0) {
-			++pass;
-		} else {
-			pass = 0;
-		}
-		
+	private char playWord(int[][] moves, char playerChar) {		
 		
 		String word = whatWordDoesThisPlayMake(moves);
 		
