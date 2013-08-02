@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import ai.Bot;
 import ai.Player;
 import ai.WordGetter;
 
@@ -79,6 +80,34 @@ public class Board {
         turn = 'b';
     }
     
+    /**
+     * @return the redPlayer
+     */
+    public Player getRedPlayer() {
+        return redPlayer;
+    }
+
+    /**
+     * @param redPlayer the redPlayer to set
+     */
+    public void setRedPlayer(Player redPlayer) {
+        this.redPlayer = redPlayer;
+    }
+    
+    /**
+     * @return the bluePlayer
+     */
+    public Player getBluePlayer() {
+        return bluePlayer;
+    } 
+    
+    /**
+     * @param bluePlayer the bluePlayer to set
+     */
+    public void setBluePlayer(Player bluePlayer) {
+        this.bluePlayer = bluePlayer;
+    }
+
     public HashSet<String> getDictionary() {
         return this.dict;
     }
@@ -283,6 +312,11 @@ public class Board {
 
 	public static void main(String[] args) {
 		Board board = new Board(true);
+		
+		Bot bluePlayer = new Bot(board);
+		Bot redPlayer = new Bot(board);
+		board.bluePlayer = bluePlayer;
+		board.redPlayer = redPlayer;
 		
 		// will currently fail because the Player objects are never initialized
 		board.playOneGame();
