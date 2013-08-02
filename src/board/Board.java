@@ -66,16 +66,19 @@ public class Board {
         // Initialize with random
         this.letterBoard = new char[5][5];
         this.colorBoard = new char[5][5];
+        
         for (int i = 0; i < 5; ++i) {
             for (int j = 0; j < 5; ++j) {
-                char fill = ((char) (random.nextInt(26) + 'a'));
-                this.letterBoard[i][j] = fill;
+                this.letterBoard[i][j] = ((char) (random.nextInt(26) + 'a'));
                 this.colorBoard[i][j] = random.nextBoolean() ? 'r' : 'b';
             }
         }
+        System.out.println("letters: ");
+     
+        printLetters();
         
-        this.playableWords = WordGetter.getPlays(this.letterBoard, this.dict);
-
+        this.playableWords = WordGetter.getPlays(getLetterBoard(), this.dict);
+        printLetters();
         // Blue goes first because I said so
         turn = 'b';
     }
@@ -154,7 +157,8 @@ public class Board {
 	}
 	
 	public void printLetters() {
-		for (char[] row : letterBoard) {
+		System.out.println("letters: ");
+		for (char[] row : this.letterBoard) {
 			for (char letter : row) {
 				System.out.print(letter + " ");
 			}
@@ -163,7 +167,7 @@ public class Board {
 	}
 	
 	public void printColors() {
-		for (char[] row : colorBoard) {
+		for (char[] row : this.colorBoard) {
 			for (char letter : row) {
 				System.out.print(letter + " ");
 			}
