@@ -17,6 +17,7 @@ import ai.WordGetter;
 public class Board {
 	private static char[][] letterBoard;
 	public char[][] colorBoard;
+	boolean verbose;
 	
 	// used for generating random boards
 	Random random;
@@ -36,6 +37,22 @@ public class Board {
 	// Letter representing whose turn it is
 	private char turn;
 
+	public void betterPrint() {
+		for (int i = 0; i < 5; ++i) {
+			for (int j = 0; j < 5; ++j) {
+				char letter = Character.isLowerCase(colorBoard[i][j]) ? letterBoard[i][j] : Character.toUpperCase(letterBoard[i][j]);
+				if (colorBoard[i][j] == 'b' || colorBoard[i][j] == 'B') {
+					System.out.print("[" + letter + "]");
+				} else if (colorBoard[i][j] == 'r' || colorBoard[i][j] == 'R') {
+					System.out.print("(" + letter + ")");
+				} else {
+					System.out.print(" " + letter + " ");
+				}
+			}
+			System.out.println();
+		}
+	}
+	
 	public void printLetters() {
 		for (char[] row : letterBoard) {
 			for (char letter : row) {
@@ -79,6 +96,11 @@ public class Board {
 			
 			updateLocked();
 			switchTurns();
+			if (verbose) {
+				System.out.println("player " + turn + " played " + new String(word));
+				betterPrint();
+			}
+			
 			return checkWinner();
 		} else {
 			return promptCurrentPlayer();
@@ -106,9 +128,9 @@ public class Board {
 	
 	// Constructor. Random characters, no players constructed yet. Blue goes first.
 	// Dictionary is read in in this constructor, exception currently unhandled.
-	public Board() {
+	public Board(boolean verbose) {
 		random = new Random();
-		
+		this.verbose = verbose;
 		HashSet<String> dict = new HashSet<String>(100000);
 		HashSet<String> used = new HashSet<String>();
 		BufferedReader br;
@@ -225,7 +247,9 @@ public class Board {
 	}
 
 	public static void main(String[] args) {
-		Board board = new Board();
+		Board board = new Board(true);
+		
+		// will currently fail because the Player objects are never initialized
 		board.playOneGame();
 
 	}
