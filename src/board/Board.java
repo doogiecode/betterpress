@@ -157,7 +157,7 @@ public class Board {
         System.out.println("[Board] Board State: ");
 		for (int i = 0; i < 5; ++i) {
 			for (int j = 0; j < 5; ++j) {
-				char letter = Character.isLowerCase(colorBoard[i][j]) ? letterBoard[i][j] : Character.toUpperCase(letterBoard[i][j]);
+				char letter = Character.isUpperCase(colorBoard[i][j]) ? Character.toUpperCase(letterBoard[i][j]) : letterBoard[i][j];
 				if (colorBoard[i][j] == 'b' || colorBoard[i][j] == 'B') {
 					System.out.print("[" + letter + "]");
 				} else if (colorBoard[i][j] == 'r' || colorBoard[i][j] == 'R') {
