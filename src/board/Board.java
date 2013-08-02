@@ -206,9 +206,10 @@ public class Board {
 		if (dict.contains(new String(word)) && !used.contains(word)) {
 			used.add(new String(word));
 			// Update colorboard to represent move
+			System.out.println("[BOARD] begin overwriting colorBoard");
 			for (int[] loc : moves) {
 				char target = colorBoard[loc[0]][loc[1]];
-				if (Character.isLowerCase(target)) {
+				if (!Character.isUpperCase(target)) {
 					colorBoard[loc[0]][loc[1]] = playerChar;
 				}
 			}
