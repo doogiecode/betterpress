@@ -44,7 +44,7 @@ public class Board {
 	   // Constructor. Random characters, no players constructed yet. Blue goes first.
     // Dictionary is read in in this constructor, exception currently unhandled.
     public Board(boolean verbose) {
-        InputStreamReader isr = new InputStreamReader(getClass().getResourceAsStream("/resources/simpleDict.txt"));
+        InputStreamReader isr = new InputStreamReader(getClass().getResourceAsStream("/resources/en.txt"));
         random = new Random();
         this.verbose = verbose;
         this.dict = new HashSet<String>(100000);
