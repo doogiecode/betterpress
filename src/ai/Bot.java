@@ -27,20 +27,7 @@ public class Bot implements Player {
     }
     
     public int[][] provideMove(char[][] letterBoard, char[][] colorBoard, HashSet<String> usedWords, char turn) {
-        Set<int[][]> playableWords = board.getPlayableWords();
-        System.out.println("[Bot] Number of playable words: " + playableWords.size());
-        
-        Random random = new Random();
-        int y = getRandomIntInRange(0, 4);
-        int x = getRandomIntInRange(0, 4);
-        
-        Iterator<int[][]> i = board.getPlayableWords().iterator();
-        
-        int[][] wordToPlay = {{y, x}};
-        String wordLiteral = board.whatWordDoesThisPlayMake(wordToPlay);
-        System.out.println("[Bot] I might play: " + wordLiteral);
-        
-        return wordToPlay;
+        return chooseMove(turn);
     }
     
     /**
@@ -74,13 +61,34 @@ public class Bot implements Player {
     	return count;
     }
     
-    private ScoredWord totalDarkMyColor(char[][] letterBoard, char[][] colorBoard, int[][] move, char color) {
-    	/*
-    	char target = Character.toUpperCase(color);
-    	colorBoard = Board.updateLocked(colorBoard)
-    	int score = count()
-    	*/
-    	return null;
+    private int[][] chooseMove(char color) {
+    	System.out.println("[BOT] I am choosing a move.");
+    	int max = 0;
+    	int[][] bestmove = new int[0][0];
+    	for (int[][] move : board.getPlayableWords()) {
+    		int nextWordScore = totalDarkMyColor(move, color);
+    		if (nextWordScore > max) {
+    			bestmove = move;
+    			max = nextWordScore;
+    		}
+    	}
+    	if (bestmove.length == 0) {
+    		System.out.println("[BOT] Error: No Playable Moves");
+    		// try {Thread.sleep(10000);} catch (InterruptedException e) {}
+    	}
+    	return bestmove;
+    }
+    
+    private int totalDarkMyColor(int[][] move, char color) {
+    	char[][] targetBoard;
+    	if (board.isValidWord(board.whatWordDoesThisPlayMake(move))) {
+    		targetBoard = Board.colorTiles(board.getColorBoard(), move, color);
+    		char target = Character.toUpperCase(color);
+    		int score = count(targetBoard, target);
+    		return score;
+    	} else {
+    		return -1; // This word's score is low because it is illegal. Do not play moves with negative score.
+    	}
     }
 
 }

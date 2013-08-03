@@ -43,7 +43,7 @@ public class Board {
 	
 	   // Constructor. Random characters, no players constructed yet. Blue goes first.
     // Dictionary is read in in this constructor, exception currently unhandled.
-    public Board(boolean verbose) {
+    public Board(boolean verbose, boolean easyBoard) {
         InputStreamReader isr = new InputStreamReader(getClass().getResourceAsStream("/resources/en.txt"));
         random = new Random();
         this.verbose = verbose;
@@ -69,7 +69,11 @@ public class Board {
         
         for (int i = 0; i < 5; ++i) {
             for (int j = 0; j < 5; ++j) {
-                this.letterBoard[i][j] = ((char) (random.nextInt(26) + 'a'));
+            	if (easyBoard) {
+            		this.letterBoard[i][j] = ((char) (5*i + j + 'a'));
+            	} else {
+            		this.letterBoard[i][j] = ((char) (random.nextInt(26) + 'a'));
+            	}
                 this.colorBoard[i][j] = '_';
             }
         }
@@ -78,6 +82,7 @@ public class Board {
         
         char[][] letterBoardCopy = deepCopy5x5Array(this.letterBoard);
         this.playableWords = WordGetter.getPlays(letterBoardCopy, this.dict);
+        System.out.println("[BOARD] there are " + this.playableWords.size() + " legal moves");
         
         printLetters();
         
@@ -188,24 +193,23 @@ public class Board {
 			System.out.println();
 		}
 	}
+	
+	public boolean isValidWord(String word) {
+		return (dict.contains(word) && !usedWords.contains(word));
+	}
 
 	// updates the board to reflect moves, if legal. else, prompts current player.
-	private char playWord(int[][] moves, char playerChar) {		
+	public char playWord(int[][] moves, char playerChar) {		
 		
 		String word = whatWordDoesThisPlayMake(moves);
 		
 		
-		if (dict.contains(word) && !usedWords.contains(word)) {
+		if (isValidWord(word)) {
 			usedWords.add(word);
 			// Update colorboard to represent move
-			for (int[] loc : moves) {
-				char target = colorBoard[loc[0]][loc[1]];
-				if (!Character.isUpperCase(target)) {
-					colorBoard[loc[0]][loc[1]] = playerChar;
-				}
-			}
 			
-			this.colorBoard = updateLocked(this.colorBoard);
+			this.colorBoard = colorTiles(this.colorBoard, moves, turn);
+
 			switchTurns();
 			if (verbose) {
 				System.out.println("player " + turn + " played " + word);
@@ -216,6 +220,17 @@ public class Board {
 		} else {
 			return promptCurrentPlayer();
 		}
+	}
+	
+	public static char[][] colorTiles(char[][] colorBoard, int[][] moves, char playerChar) {
+		char[][] copyBoard = deepCopy5x5Array(colorBoard);
+		for (int[] loc : moves) {
+			char target = copyBoard[loc[0]][loc[1]];
+			if (!Character.isUpperCase(target)) {
+				copyBoard[loc[0]][loc[1]] = playerChar;
+			}
+		}
+		return updateLocked(copyBoard);
 	}
 
 	// super simple. changes whose turn it is.
@@ -302,27 +317,13 @@ public class Board {
 	
 	public String whatWordDoesThisPlayMake(int[][] play) {
 		char[] wordarray = new char[play.length];
-		System.out.println(play.length);
-		System.out.println(play[0].length);
 		for (int i = 0; i < play.length; ++i) {
 			wordarray[i] = letterBoard[ play[i][0] ][ play[i][1] ];
 		}
 		return new String(wordarray);
 	}
 	
-	// Stores the boardstate, plays move, returns current boardstate, reverts
-	public char[][] hypotheticalMove(int[][] move, char color) {
-		char[][] storedColorBoard = colorBoard;
-		char[][] returnBoard;
-		HashSet<String> storedUsed = usedWords;
-		playWord(move, color);
-		returnBoard = colorBoard;
-		colorBoard = storedColorBoard;
-		turn = color;
-		usedWords = storedUsed;
-		return returnBoard;
-		
-	}
+	
 
 	// returns the char of the winner as soon as someone wins.
 	public char playOneGame() {
@@ -332,7 +333,7 @@ public class Board {
 	}
 
 	public static void main(String[] args) {
-		Board board = new Board(true);
+		Board board = new Board(true, false);
 		board.printColors();
 		board.printLetters();
 		board.betterPrint();
@@ -343,7 +344,7 @@ public class Board {
 		board.redPlayer = redPlayer;
 		
 		// will currently fail because the Player objects are never initialized
-		board.playOneGame();
+		System.out.println(board.playOneGame());
 
 	}
 }
