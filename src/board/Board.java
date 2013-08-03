@@ -304,8 +304,7 @@ public class Board {
 							continue;
 						}
 						// if any don't match, don't lock it
-						if (colorBoard[i][j] != Character
-								.toLowerCase(colorBoard[i + x][j + y])) {
+						if (!charMatch(colorBoard[i][j], colorBoard[i + x][j + y])) {
 							newColorBoard[i][j] = colorBoard[i][j];
 						}
 					}
@@ -313,6 +312,14 @@ public class Board {
 			}
 		}
 		return newColorBoard;
+	}
+	
+	public static boolean charMatch(char char1, char char2) {
+		if (Character.toLowerCase(char1) == Character.toLowerCase(char2)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public String whatWordDoesThisPlayMake(int[][] play) {
