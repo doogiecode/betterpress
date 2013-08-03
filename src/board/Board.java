@@ -218,7 +218,9 @@ public class Board {
 			
 			return checkWinner();
 		} else {
-			return promptCurrentPlayer();
+			System.out.println("[BOARD] Player " + turn + " made an illegal move, and so loses.");
+			switchTurns();
+			return turn;
 		}
 	}
 	
@@ -305,7 +307,7 @@ public class Board {
 						}
 						// if any don't match, don't lock it
 						if (!charMatch(colorBoard[i][j], colorBoard[i + x][j + y])) {
-							newColorBoard[i][j] = colorBoard[i][j];
+							newColorBoard[i][j] = Character.toLowerCase(colorBoard[i][j]);
 						}
 					}
 				}

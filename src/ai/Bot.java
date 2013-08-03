@@ -27,12 +27,7 @@ public class Bot implements Player {
 
 	public int[][] provideMove(char[][] letterBoard, char[][] colorBoard,
 			HashSet<String> usedWords, char turn) {
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		return chooseMove(turn);
 	}
 
@@ -91,7 +86,7 @@ public class Bot implements Player {
 		}
 		if (bestmove.length == 0) {
 			System.out.println("[BOT] Error: No Playable Moves");
-			// try {Thread.sleep(10000);} catch (InterruptedException e) {}
+			try {Thread.sleep(1000);} catch (InterruptedException e) {}
 		}
 		return bestmove;
 	}
@@ -105,7 +100,7 @@ public class Bot implements Player {
 
 	private boolean weWin(char[][] board, char color) {
 		
-		int nulls = count(board, ' ');
+		int nulls = count(board, '_');
 		
 		if (nulls == 0) {
 			int reds = count(board, color) + count(board, Character.toUpperCase(color));
