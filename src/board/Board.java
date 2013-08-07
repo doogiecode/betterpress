@@ -115,7 +115,7 @@ public class Board {
 		char[][] letterArray = new char[5][5];
 		for (int i = 0; i < 5; ++i) {
 			for (int j = 0; j < 5; ++j) {
-				letterArray[i][j] = charSet.remove(random.nextInt(charSet.size()-1));
+				letterArray[i][j] = charSet.remove(random.nextInt(charSet.size()));
 			}
 		}
 		return letterArray;
