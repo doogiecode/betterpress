@@ -100,7 +100,7 @@ public class Bot implements Player {
 
 	private boolean weWin(char[][] board, char color) {
 		
-		int nulls = count(board, '_');
+		int nulls = count(board, ' ');
 		
 		if (nulls == 0) {
 			int reds = count(board, color) + count(board, Character.toUpperCase(color));
