@@ -2,14 +2,14 @@
  * Copyright (c) 2013 Elder Research, Inc.
  * All rights reserved. 
  */
-package ai;
+package betterpress.game.ai;
 
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
-import board.Board;
+import betterpress.game.board.Board;
 
 /**
  * This class implements a bot that can play Letterpress.

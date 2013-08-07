@@ -1,4 +1,4 @@
-package ai;
+package betterpress.game.ai;
 
 import java.util.HashSet;
 

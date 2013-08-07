@@ -1,4 +1,4 @@
-package board;
+package betterpress.game.board;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import ai.Bot;
-import ai.Player;
-import ai.WordGetter;
+import betterpress.game.ai.Bot;
+import betterpress.game.ai.Player;
+import betterpress.game.ai.WordGetter;
 
 public class Board {
 
