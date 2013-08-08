@@ -4,12 +4,13 @@
  */
 package ai;
 
+import game.Board;
+import game.GameContext;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
-
-import board.Board;
 
 /**
  * This class implements a bot that can play Letterpress.
@@ -19,14 +20,15 @@ import board.Board;
  */
 public class Bot implements Player {
 
+	private GameContext game;
 	private Board board;
 
-	public Bot(Board board) {
+	public Bot(GameContext game, Board board) {
 		this.board = board;
+		this.game = game;
 	}
 
-	public int[][] provideMove(char[][] letterBoard, char[][] colorBoard,
-			HashSet<String> usedWords, char turn) {
+	public int[][] provideMove(char turn) {
 		
 		return chooseMove(turn);
 	}
@@ -63,12 +65,11 @@ public class Bot implements Player {
 	}
 
 	private int[][] chooseMove(char color) {
-		System.out.println("[BOT] I am choosing a move.");
 		int max = 0;
 		int[][] bestmove = new int[0][0];
 		char[][] simBoard;
-		for (int[][] move : board.getPlayableWords()) {
-			if (!board.isValidWord(board.whatWordDoesThisPlayMake(move))) {
+		for (int[][] move : game.getPlayableWords()) {
+			if (!game.isValidWord(game.whatWordDoesThisPlayMake(move))) {
 				continue;
 			}
 			simBoard = simulateMove(move, color);
@@ -91,7 +92,7 @@ public class Bot implements Player {
 		return bestmove;
 	}
 
-	private char[][] simulateMove(int[][] move, char color) {
+	private char[][] simulateMove(int[][] move, char color) {		
 		char[][] resultingBoard;
 		resultingBoard = Board.colorTiles(board.getColorBoard(), move, color);
 		return resultingBoard;
