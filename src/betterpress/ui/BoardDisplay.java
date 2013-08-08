@@ -3,14 +3,17 @@ package betterpress.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.Rectangle;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**
+ * Draws the BetterPress board.
+ * 
+ * @author <a href="tzakyrie@gmail.com">zab7ge</a>
+ * @since Aug 8, 2013
+ */
 public class BoardDisplay extends JPanel {
 
 	private int CELLSIZE = 40;
@@ -69,9 +72,5 @@ public class BoardDisplay extends JPanel {
 		repaint();
 	}
 	
-	@Override
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-	}
 }
 

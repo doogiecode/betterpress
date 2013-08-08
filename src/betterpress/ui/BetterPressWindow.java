@@ -4,13 +4,19 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+/**
+ * Window to display BetterPress Visualization.
+ * 
+ * @author <a href="tzakyrie@gmail.com">zab7ge</a>
+ * @since Aug 8, 2013
+ */
 public class BetterPressWindow extends JFrame {
 	
-	private JPanel display;
+	private BoardDisplay display;
+	private JScrollPane scrollPane;
 	private JTextArea textArea;
 	
 	public BetterPressWindow() {
@@ -24,21 +30,28 @@ public class BetterPressWindow extends JFrame {
 		textArea.setWrapStyleWord(true);
 		textArea.setLineWrap(true);
 		textArea.setEditable(false);
-		JScrollPane scrollPane = new JScrollPane(textArea,
+		scrollPane = new JScrollPane(textArea,
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setPreferredSize(new Dimension(200, 400));
 		
+		
 		getContentPane().add(scrollPane, BorderLayout.EAST);
 	}
 	
-	public void setBoardDisplay(JPanel boardDisplay) {
+	public void setBoardDisplay(BoardDisplay boardDisplay) {
 		display = boardDisplay;
 		getContentPane().add(display, BorderLayout.WEST);
 	}
 	
+	public BoardDisplay getBoardDisplay() {
+		return display;
+	}
+	
 	public void printToTextArea(String s) {
-		textArea.append(s + "\n");
+		textArea.append(s + "\n\n");
+		scrollPane.getVerticalScrollBar().setValue(
+				scrollPane.getVerticalScrollBar().getMaximum());
 		repaint();
 	}
 	

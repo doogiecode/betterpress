@@ -1,7 +1,5 @@
 package betterpress.game.letterpress;
 
-import javax.swing.JPanel;
-
 import betterpress.ui.BetterPressWindow;
 import betterpress.ui.BoardDisplay;
 
@@ -10,11 +8,10 @@ public class Main {
 		BetterPressWindow window = new BetterPressWindow();
 		BoardDisplay boardDisplay = new BoardDisplay();
 		window.setBoardDisplay(boardDisplay);
-		window.printToTextArea("Welcome to BetterPress!\n");
+		window.printToTextArea("Welcome to BetterPress!");
 		window.setVisible(true);
 		
-		GameContext gc = new GameContext(boardDisplay);
-		gc.start();
-		
+		GameContext gc = new GameContext(window);
+		gc.start();	
 	}
 }

@@ -24,16 +24,10 @@ public class Bot implements Player {
 	}
 
 	public int[][] provideMove(char turn) {
-		
 		return chooseMove(turn);
 	}
 
-	/**
-	 * 
-	 * @param lowerBound
-	 * @param upperBound
-	 * @return Random integer between lowerBound and upperBound inclusive
-	 */
+	@Deprecated
 	public int getRandomIntInRange(int lowerBound, int upperBound) {
 		if (lowerBound > upperBound) {
 			int tempLowerBound = lowerBound;
@@ -81,7 +75,8 @@ public class Bot implements Player {
 			}
 		}
 		if (bestmove.length == 0) {
-			System.out.println("[BOT] Error: No Playable Moves");
+			game.print("[BOT]:" + color + "  Error: No Playable Moves");
+//			Why is this here? vvvvvvv?
 			try {Thread.sleep(1000);} catch (InterruptedException e) {}
 		}
 		return bestmove;
@@ -95,7 +90,6 @@ public class Bot implements Player {
 	}
 
 	private boolean weWin(char[][] board, char color) {
-		
 		int nulls = count(board, ' ');
 		
 		if (nulls == 0) {
@@ -111,7 +105,6 @@ public class Bot implements Player {
 		char target = Character.toUpperCase(color);
 		int score = count(targetBoard, target);
 		return score;
-
 	}
 
 }

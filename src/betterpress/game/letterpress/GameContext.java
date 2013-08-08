@@ -10,32 +10,42 @@ import java.util.Set;
 import betterpress.game.ai.Bot;
 import betterpress.game.ai.Player;
 import betterpress.game.ai.WordGetter;
+import betterpress.ui.BetterPressWindow;
 import betterpress.ui.BoardDisplay;
 
+/**
+ * 
+ * @author <a href="tzakyrie@gmail.com">zab7ge</a>
+ * @since Aug 8, 2013
+ */
 public class GameContext {
+
+	private boolean DEBUG = true; // Switch me to disable most text output
 	
+	private final String DICTIONARY_FILE = "/resources/en.txt";
+	private BetterPressWindow window;
 	private BoardDisplay display;
-	
+
 	private Board board;
 	private char turn;
 	private HashSet<String> usedWords;
 	private HashSet<String> dictionary;
 	private Player redPlayer;
 	private Player bluePlayer;
-	private Random random;
 	private Set<int[][]> playableWords;
-	
-	public GameContext(BoardDisplay boardDisplay) {
-		display = boardDisplay;
+
+	public GameContext(BetterPressWindow window) {
+		this.window = window;
+		display = window.getBoardDisplay();
 	}
-	
+
 	public void start() {
 		initializeDictionary();
 		Board board = new Board(true, false);
-		
+
 		display.setLetterBoard(board.getLetterBoard(), 5, 5);
 		display.setColorBoard(board.getColorBoard(), 5, 5);
-		
+
 		this.playableWords = WordGetter.getPlays(board.getLetterBoard(), dictionary);
 		this.board = board;
 
@@ -48,7 +58,7 @@ public class GameContext {
 		System.out.println(playOneGame());
 
 	}
-	
+
 	public char playWord(int[][] moves, char playerChar) {
 
 		String word = board.whatWordDoesThisPlayMake(moves);
@@ -56,29 +66,30 @@ public class GameContext {
 		if (isValidWord(word)) {
 			usedWords.add(word);
 			// Update colorboard to represent move
-
-			board.setColorBoard(board.colorTiles(board.getColorBoard(), moves, turn));
+			board.setColorBoard(Board.colorTiles(board.getColorBoard(), moves, turn));
 			display.setColorBoard(board.getColorBoard(), 5, 5);
-			
+
 			switchTurns();
-			if (false) {
-				System.out.println("player " + turn + " played " + word);
-				board.betterPrint();
+			if (DEBUG) {
+				window.printToTextArea("player " + turn + " played " + word);
+				window.printToTextArea(board.betterPrint());
 			}
 
 			return board.checkWinner();
 		} else {
-			System.out.println("[BOARD] Player " + turn
+			window.printToTextArea("[BOARD] Player " + turn
 					+ " made an illegal move, and so loses.");
 			switchTurns();
 			return turn;
 		}
 	}
-	
+
+	/**
+	 * Build the dictionary.
+	 */
 	private void initializeDictionary() {
 		InputStreamReader isr = new InputStreamReader(getClass()
-				.getResourceAsStream("/resources/en.txt"));
-		random = new Random();
+				.getResourceAsStream(DICTIONARY_FILE));
 		this.dictionary = new HashSet<String>(100000);
 		this.usedWords = new HashSet<String>();
 		BufferedReader br;
@@ -95,28 +106,32 @@ public class GameContext {
 			e.printStackTrace();
 		}
 	}
-	
-	// returns the letter of who wins, or ' ' if no one has won yet.
-		char checkWinner() {
-			
-			char boardWinner = board.checkWinner();
-			
-			if (boardWinner != ' ') {
-				return boardWinner;
-				 
-			} else if (usedWords.size() == playableWords.size()) {
-				
-				return board.boardLeader();
-			} else {
-				return ' ';
-			}
+
+	/**
+	 * returns the letter of who wins, or ' ' if no one has won yet.
+	 * @return A char representing the winner. ( 'r', 'b', or ' ')
+	 */
+	public char checkWinner() {
+
+		char boardWinner = board.checkWinner();
+
+		if (boardWinner != ' ') {
+			return boardWinner;
+
+		} else if (usedWords.size() == playableWords.size()) {
+
+			return board.boardLeader();
+		} else {
+			return ' ';
 		}
+	}
 
 	// returns the char of the winner as soon as someone wins.
 	public char playOneGame() {
 		char winner;
-		while ((winner = promptCurrentPlayer()) == ' ')
-			;
+		while ((winner = promptCurrentPlayer()) == ' ') {
+			continue;
+		}
 		return winner;
 	}
 
@@ -140,7 +155,7 @@ public class GameContext {
 	public boolean isValidWord(String word) {
 		return (dictionary.contains(word) && !usedWords.contains(word));
 	}
-	
+
 	public Set<int[][]> getPlayableWords() {
 		return this.playableWords;
 	}
@@ -185,5 +200,9 @@ public class GameContext {
 
 	public String whatWordDoesThisPlayMake(int[][] move) {
 		return board.whatWordDoesThisPlayMake(move);
+	}
+	
+	public void print(String s) {
+		window.printToTextArea(s);
 	}
 }

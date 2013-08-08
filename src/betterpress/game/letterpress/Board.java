@@ -90,23 +90,24 @@ public class Board {
 	}
 
 
-
-	public void betterPrint() {
-		System.out.println("[Board] Board State: ");
+	public String betterPrint() {
+		StringBuffer buf = new StringBuffer();
+		buf.append("[Board] Board State: \n");
 		for (int i = 0; i < 5; ++i) {
 			for (int j = 0; j < 5; ++j) {
 				char letter = Character.isUpperCase(colorBoard[i][j]) ? Character
 						.toUpperCase(letterBoard[i][j]) : letterBoard[i][j];
 				if (colorBoard[i][j] == 'b' || colorBoard[i][j] == 'B') {
-					System.out.print("[" + letter + "]");
+					buf.append("[" + letter + "]");
 				} else if (colorBoard[i][j] == 'r' || colorBoard[i][j] == 'R') {
-					System.out.print("(" + letter + ")");
+					buf.append("(" + letter + ")");
 				} else {
-					System.out.print(" " + letter + " ");
+					buf.append(" " + letter + " ");
 				}
 			}
-			System.out.println();
+			buf.append("\n");
 		}
+		return buf.toString();
 	}
 
 	public void printLetters() {
@@ -153,7 +154,7 @@ public class Board {
 	
 
 	// returns the letter of who wins, or ' ' if no one has won yet.
-	char checkWinner() {
+	public char checkWinner() {
 		
 		int blue = 0;
 		int red = 0;
@@ -179,7 +180,7 @@ public class Board {
 		}
 	}
 	
-	char boardLeader() {
+	public char boardLeader() {
 		int blue = 0;
 		int red = 0;
 		for (char[] row : colorBoard) {
@@ -258,10 +259,6 @@ public class Board {
 
 	public void setColorBoard(char[][] colorTiles) {
 		this.colorBoard = colorTiles;
-		
 	}
-
-	
-
 	
 }
