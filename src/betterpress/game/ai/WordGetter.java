@@ -1,9 +1,9 @@
-package ai;
-
-import game.Board;
+package betterpress.game.ai;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import betterpress.game.letterpress.Board;
 
 public class WordGetter {
 	public static Set<int[][]> getPlays(char[][] letterBoard, Set<String> dict) {
