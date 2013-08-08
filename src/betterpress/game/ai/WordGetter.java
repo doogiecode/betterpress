@@ -3,12 +3,12 @@ package betterpress.game.ai;
 import java.util.HashSet;
 import java.util.Set;
 
-import betterpress.game.board.Board;
+import betterpress.game.letterpress.Board;
 
 public class WordGetter {
-	public static Set<int[][]> getPlays(char[][] letterBoard, HashSet<String> dict) {
+	public static Set<int[][]> getPlays(char[][] letterBoard, Set<String> dict) {
 	    System.out.println("[WordGetter] Number of words in dictionary: " + dict.size());
-		HashSet<int[][]> plays = new HashSet<int[][]>();
+		Set<int[][]> plays = new HashSet<int[][]>();
 		
 		// Iterate through the dictionary, add all the ways to make all the words in it
 		for (String word : dict) {
