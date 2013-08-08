@@ -10,8 +10,12 @@ import java.util.Set;
 import betterpress.game.ai.Bot;
 import betterpress.game.ai.Player;
 import betterpress.game.ai.WordGetter;
+import betterpress.ui.BoardDisplay;
 
 public class GameContext {
+	
+	private BoardDisplay display;
+	
 	private Board board;
 	private char turn;
 	private HashSet<String> usedWords;
@@ -21,13 +25,17 @@ public class GameContext {
 	private Random random;
 	private Set<int[][]> playableWords;
 	
-	public GameContext() {
-		
+	public GameContext(BoardDisplay boardDisplay) {
+		display = boardDisplay;
 	}
 	
 	public void start() {
 		initializeDictionary();
 		Board board = new Board(true, false);
+		
+		display.setLetterBoard(board.getLetterBoard(), 5, 5);
+		display.setColorBoard(board.getColorBoard(), 5, 5);
+		
 		this.playableWords = WordGetter.getPlays(board.getLetterBoard(), dictionary);
 		this.board = board;
 
@@ -50,7 +58,8 @@ public class GameContext {
 			// Update colorboard to represent move
 
 			board.setColorBoard(board.colorTiles(board.getColorBoard(), moves, turn));
-
+			display.setColorBoard(board.getColorBoard(), 5, 5);
+			
 			switchTurns();
 			if (false) {
 				System.out.println("player " + turn + " played " + word);

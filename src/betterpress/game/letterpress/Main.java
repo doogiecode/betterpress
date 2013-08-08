@@ -8,14 +8,13 @@ import betterpress.ui.BoardDisplay;
 public class Main {
 	public static void main(String[] args) {
 		BetterPressWindow window = new BetterPressWindow();
-		JPanel boardDisplay = new BoardDisplay();
+		BoardDisplay boardDisplay = new BoardDisplay();
 		window.setBoardDisplay(boardDisplay);
 		window.printToTextArea("Welcome to BetterPress!\n");
 		window.setVisible(true);
 		
-		GameContext gc = new GameContext();
+		GameContext gc = new GameContext(boardDisplay);
 		gc.start();
-		
 		
 	}
 }
