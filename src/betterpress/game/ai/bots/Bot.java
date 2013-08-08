@@ -2,8 +2,9 @@
  * Copyright (c) 2013 Elder Research, Inc.
  * All rights reserved. 
  */
-package betterpress.game.ai;
+package betterpress.game.ai.bots;
 
+import betterpress.game.ai.Player;
 import betterpress.game.letterpress.Board;
 import betterpress.game.letterpress.GameContext;
 
@@ -13,10 +14,10 @@ import betterpress.game.letterpress.GameContext;
  * @author William Proffitt
  * @since Aug 2, 2013
  */
-public class Bot implements Player {
+public abstract class Bot implements Player {
 
-	private GameContext game;
-	private Board board;
+	protected GameContext game;
+	protected Board board;
 
 	public Bot(GameContext game, Board board) {
 		this.board = board;
@@ -26,6 +27,8 @@ public class Bot implements Player {
 	public int[][] provideMove(char turn) {
 		return chooseMove(turn);
 	}
+	
+	protected abstract int[][] chooseMove(char color);
 
 	@Deprecated
 	public int getRandomIntInRange(int lowerBound, int upperBound) {
@@ -41,7 +44,7 @@ public class Bot implements Player {
 		return (int) (Math.floor(Math.random() * differenceInBounds) + lowerBound);
 	}
 
-	private int count(char[][] board, char target) {
+	protected int count(char[][] board, char target) {
 		int count = 0;
 		for (int i = 0; i < 5; ++i) {
 			for (int j = 0; j < 5; ++j) {
@@ -53,43 +56,14 @@ public class Bot implements Player {
 		return count;
 	}
 
-	private int[][] chooseMove(char color) {
-		int max = 0;
-		int[][] bestmove = new int[0][0];
-		char[][] simBoard;
-		for (int[][] move : game.getPlayableWords()) {
-			if (!game.isValidWord(game.whatWordDoesThisPlayMake(move))) {
-				continue;
-			}
-			simBoard = simulateMove(move, color);
-			
-			if (weWin(simBoard, color)) {
-				bestmove = move;
-				break;
-			}
-			
-			int nextWordScore = totalDarkMyColor(simBoard, color);
-			if (nextWordScore > max) {
-				bestmove = move;
-				max = nextWordScore;
-			}
-		}
-		if (bestmove.length == 0) {
-			game.print("[BOT]:" + color + "  Error: No Playable Moves");
-//			Why is this here? vvvvvvv?
-			try {Thread.sleep(1000);} catch (InterruptedException e) {}
-		}
-		return bestmove;
-	}
-
-	private char[][] simulateMove(int[][] move, char color) {		
+	protected char[][] simulateMove(int[][] move, char color) {		
 		char[][] resultingBoard;
 		resultingBoard = Board.colorTiles(board.getColorBoard(), move, color);
 		return resultingBoard;
 
 	}
 
-	private boolean weWin(char[][] board, char color) {
+	protected boolean weWin(char[][] board, char color) {
 		int nulls = count(board, ' ');
 		
 		if (nulls == 0) {
@@ -101,7 +75,7 @@ public class Bot implements Player {
 		return false;
 	}
 
-	private int totalDarkMyColor(char[][] targetBoard, char color) {
+	protected int totalDarkMyColor(char[][] targetBoard, char color) {
 		char target = Character.toUpperCase(color);
 		int score = count(targetBoard, target);
 		return score;

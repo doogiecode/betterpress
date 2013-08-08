@@ -4,12 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 
-import betterpress.game.ai.Bot;
 import betterpress.game.ai.Player;
 import betterpress.game.ai.WordGetter;
+import betterpress.game.ai.bots.DefaultBot;
 import betterpress.ui.BetterPressWindow;
 import betterpress.ui.BoardDisplay;
 
@@ -41,22 +40,28 @@ public class GameContext {
 
 	public void start() {
 		initializeDictionary();
-		Board board = new Board(true, false);
+		board = new Board(true, false);
 
 		display.setLetterBoard(board.getLetterBoard(), 5, 5);
 		display.setColorBoard(board.getColorBoard(), 5, 5);
 
 		this.playableWords = WordGetter.getPlays(board.getLetterBoard(), dictionary);
-		this.board = board;
 
-		Bot bluePlayer = new Bot(this, this.board);
-		Bot redPlayer = new Bot(this, this.board);
-		this.bluePlayer = bluePlayer;
-		this.redPlayer = redPlayer;
+		this.bluePlayer = new DefaultBot(this, board);
+		this.redPlayer = new DefaultBot(this, board);
 
 		// will currently fail because the Player objects are never initialized
-		System.out.println(playOneGame());
-
+		char w = playOneGame();
+		String winner;
+		if (w == 'r') {
+			winner = "RedPlayer";
+		} else if (w == 'b') {
+			winner = "BluePlayer";
+		} else {
+			throw new IllegalStateException(
+					"Should not have a winner that is not red or blue player.");
+		}
+		window.printToTextArea("Winner is " + winner + "!");
 	}
 
 	public char playWord(int[][] moves, char playerChar) {
@@ -112,7 +117,6 @@ public class GameContext {
 	 * @return A char representing the winner. ( 'r', 'b', or ' ')
 	 */
 	public char checkWinner() {
-
 		char boardWinner = board.checkWinner();
 
 		if (boardWinner != ' ') {
