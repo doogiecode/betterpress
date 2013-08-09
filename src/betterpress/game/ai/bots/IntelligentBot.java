@@ -41,8 +41,6 @@ public class IntelligentBot extends Bot {
 		}
 		if (bestmove.length == 0) {
 			game.print("[BOT]:" + color + "  Error: No Playable Moves");
-//			Why is this here? vvvvvvv?
-			try {Thread.sleep(1000);} catch (InterruptedException e) {}
 		}
 		return bestmove;
 	}
