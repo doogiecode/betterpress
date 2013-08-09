@@ -33,7 +33,7 @@ public class IntelligentBot extends Bot {
 			int darkMyColor = count(simBoard, Character.toUpperCase(color));
 			int lightMyColor = count(simBoard, Character.toLowerCase(color));
 			int lightOtherColor = count(simBoard, otherColor);
-			double nextWordScore = 10*darkMyColor + lightMyColor + 0.1*lightOtherColor;
+			double nextWordScore = 1.2*darkMyColor + lightMyColor - 0.5*lightOtherColor;
 			if (nextWordScore > max) {
 				bestmove = move;
 				max = nextWordScore;
