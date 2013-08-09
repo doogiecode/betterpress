@@ -38,7 +38,7 @@ public class BoardDisplay extends JPanel {
 						JLabel.CENTER);
 				board[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 				board[i][j].setSize(new Dimension(CELLSIZE, CELLSIZE));
-				board[i][j].setLocation(CORNER_OFFSET + i*CELLSIZE, CORNER_OFFSET + j*CELLSIZE);
+				board[i][j].setLocation(CORNER_OFFSET + j*CELLSIZE, CORNER_OFFSET + i*CELLSIZE);
 				board[i][j].setOpaque(true);
 				add(board[i][j]);
 			}
