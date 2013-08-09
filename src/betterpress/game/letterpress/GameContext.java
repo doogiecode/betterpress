@@ -76,7 +76,6 @@ public class GameContext {
 			
 			writeIndex = 0;
 			while ((nextline = br.readLine()) != null && writeIndex < 5) {
-				System.out.println("[GAME CONTEXT]" + Arrays.toString(nextline.toCharArray()));
 				colorBoard[writeIndex] = nextline.toCharArray();
 				++writeIndex;
 			}
