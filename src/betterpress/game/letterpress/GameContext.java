@@ -13,6 +13,7 @@ import java.util.Set;
 import betterpress.game.ai.Player;
 import betterpress.game.ai.WordGetter;
 import betterpress.game.ai.bots.DefaultBot;
+import betterpress.game.ai.bots.IntelligentBot;
 import betterpress.ui.BetterPressWindow;
 import betterpress.ui.BoardDisplay;
 
@@ -75,6 +76,7 @@ public class GameContext {
 			
 			writeIndex = 0;
 			while ((nextline = br.readLine()) != null && writeIndex < 5) {
+				System.out.println("[GAME CONTEXT]" + Arrays.toString(nextline.toCharArray()));
 				colorBoard[writeIndex] = nextline.toCharArray();
 				++writeIndex;
 			}
@@ -111,8 +113,8 @@ public class GameContext {
 
 		this.playableWords = WordGetter.getPlays(board.getLetterBoard(), dictionary);
 
-		this.bluePlayer = new DefaultBot(this, board);
-		this.redPlayer = new DefaultBot(this, board);
+		this.bluePlayer = new IntelligentBot(this, board);
+		this.redPlayer = new IntelligentBot(this, board);
 
 		this.turn = 'b'; // Blue goes first because.
 		char w = playOneGame();
