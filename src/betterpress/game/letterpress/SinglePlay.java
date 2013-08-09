@@ -1,8 +1,9 @@
 package betterpress.game.letterpress;
 
-import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import betterpress.game.ai.Player;
 import betterpress.game.ai.bots.IntelligentBot;
@@ -15,17 +16,30 @@ public class SinglePlay {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		URL url = SinglePlay.class.getResource(filename);
-		File boardFile = null;
-		try {
-			boardFile = new File(url.toURI());
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		GameContext game = new GameContext(boardFile);
+		//======Board File Initialization======
+		InputStreamReader boardReader = null;
 		
-		System.out.println("Current Board State: ");
+		if (args.length < 1) {
+			InputStream input = SinglePlay.class.getResourceAsStream(filename);
+			boardReader = new InputStreamReader(input);
+		} else {
+			System.out.println("Reading from input file...\n");
+			
+			InputStream input = null;
+			try {
+				input = new FileInputStream(args[0]);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+				System.out.println("Unable to find file: " + args[0]);
+				System.exit(1);
+			}
+			boardReader = new InputStreamReader(input);
+		}
+		//======Board File Initialization======
+
+		GameContext game = new GameContext(boardReader);
+		
+		System.out.print("Current ");
 		Board board = game.getBoard(); 
 		System.out.println(board.betterPrint());
 		
@@ -40,7 +54,7 @@ public class SinglePlay {
 		
 		board.setColorBoard(Board.colorTiles(board.getColorBoard(), move, 'b'));
 		
-		System.out.println("Final Board State: ");
+		System.out.print("Final ");
 		System.out.println(board.betterPrint());
 	}
 

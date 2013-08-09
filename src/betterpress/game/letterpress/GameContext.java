@@ -42,8 +42,8 @@ public class GameContext {
 		display = window.getBoardDisplay();
 	}
 	
-	public GameContext(BetterPressWindow window, File boardInput) {
-		this(boardInput);
+	public GameContext(BetterPressWindow window, InputStreamReader boardReader) {
+		this(boardReader);
 		this.window = window;
 		display = window.getBoardDisplay();
 	}
@@ -52,15 +52,15 @@ public class GameContext {
 	 * Constructor for use without gui.
 	 * @param boardFile
 	 */
-	public GameContext(File boardFile) {
+	public GameContext(InputStreamReader boardReader) {
 		initializeDictionary();
-		this.board = readBoardFile(this, boardFile);
+		this.board = readBoardFile(this, boardReader);
 		if (board != null) {
 			playableWords = WordGetter.getPlays(board.getLetterBoard(), dictionary);
 		}
 	}
 	
-	public static Board readBoardFile(GameContext game, File boardFile) {
+	public static Board readBoardFile(GameContext game, InputStreamReader boardReader) {
 		Board board = null;
 		// Input board should be formatted as such:
 		// abdrw
@@ -81,7 +81,7 @@ public class GameContext {
 		//
 		char[][] letterBoard = null;
 		char[][] colorBoard = null;
-		try (BufferedReader br = new BufferedReader(new FileReader(boardFile))) {
+		try (BufferedReader br = new BufferedReader(boardReader)) {
 			String nextline;
 			letterBoard = new char[5][5];
 			colorBoard = new char[5][5];

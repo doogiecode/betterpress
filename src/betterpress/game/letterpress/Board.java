@@ -98,7 +98,7 @@ public class Board {
 
 	public String betterPrint() {
 		StringBuffer buf = new StringBuffer();
-		buf.append("[Board] Board State: \n");
+		buf.append("Board State: \n");
 		for (int i = 0; i < 5; ++i) {
 			for (int j = 0; j < 5; ++j) {
 				char letter = Character.isUpperCase(colorBoard[i][j]) ? Character
