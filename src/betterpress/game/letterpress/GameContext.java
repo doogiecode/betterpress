@@ -76,7 +76,6 @@ public class GameContext {
 			
 			writeIndex = 0;
 			while ((nextline = br.readLine()) != null && writeIndex < 5) {
-				System.out.println("[GAME CONTEXT]" + Arrays.toString(nextline.toCharArray()));
 				colorBoard[writeIndex] = nextline.toCharArray();
 				++writeIndex;
 			}
@@ -107,9 +106,8 @@ public class GameContext {
 		}
 		
 
-		
-		display.setLetterBoard(board.getLetterBoard(), 5, 5);
-		display.setColorBoard(board.getColorBoard(), 5, 5);
+		display.setLetterBoard(board.getLetterBoard());
+		display.setColorBoard(board.getColorBoard());
 
 		this.playableWords = WordGetter.getPlays(board.getLetterBoard(), dictionary);
 
@@ -136,9 +134,11 @@ public class GameContext {
 
 		if (isValidWord(word)) {
 			usedWords.add(word);
+			// Don't allow any substring words either
+			removeSubPlayedWords(word);
 			// Update colorboard to represent move
 			board.setColorBoard(Board.colorTiles(board.getColorBoard(), moves, turn));
-			display.setColorBoard(board.getColorBoard(), 5, 5);
+			display.setColorBoard(board.getColorBoard());
 
 			switchTurns();
 			if (DEBUG) {
@@ -152,6 +152,12 @@ public class GameContext {
 					+ " made an illegal move, and so loses.");
 			switchTurns();
 			return turn;
+		}
+	}
+	
+	private void removeSubPlayedWords(String word) {
+		for (int i=2; i < word.length()-1; i++) {
+			usedWords.add(word.substring(0, i));
 		}
 	}
 

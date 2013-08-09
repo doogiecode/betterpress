@@ -33,7 +33,7 @@ public class BetterPressWindow extends JFrame {
 		scrollPane = new JScrollPane(textArea,
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setPreferredSize(new Dimension(200, 400));
+		scrollPane.setPreferredSize(new Dimension(200, 600));
 		
 		
 		getContentPane().add(scrollPane, BorderLayout.EAST);
