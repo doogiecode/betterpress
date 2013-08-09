@@ -114,6 +114,7 @@ public class GameContext {
 		this.bluePlayer = new DefaultBot(this, board);
 		this.redPlayer = new DefaultBot(this, board);
 
+		this.turn = 'b'; // Blue goes first because.
 		char w = playOneGame();
 		String winner;
 		if (w == 'r') {
