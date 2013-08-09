@@ -9,11 +9,13 @@ import betterpress.game.ai.bots.IntelligentBot;
 
 public class SinglePlay {
 	
+	private static final String filename = "/resources/boardInput.txt";
+	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		URL url = SinglePlay.class.getResource("/resources/boardInput.txt");
+		URL url = SinglePlay.class.getResource(filename);
 		File boardFile = null;
 		try {
 			boardFile = new File(url.toURI());
