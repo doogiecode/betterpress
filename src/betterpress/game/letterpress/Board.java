@@ -17,7 +17,7 @@ public class Board {
 	// Constructor. Random characters, no players constructed yet. Blue goes
 	// first.
 	// Dictionary is read in in this constructor, exception currently unhandled.
-	public Board(boolean verbose, boolean easyBoard) {
+	public Board(boolean easyBoard) {
 		this.random = new Random();
 
 		// Initialize with random
@@ -34,6 +34,12 @@ public class Board {
 				this.colorBoard[i][j] = '_';
 			}
 		}
+	}
+	
+	public Board(char[][] letterBoard, char[][] colorBoard) {
+		this.random = new Random();
+		this.letterBoard = letterBoard;
+		this.colorBoard = colorBoard;
 	}
 	
 	private static char[][] reasonableLetterBoard() {

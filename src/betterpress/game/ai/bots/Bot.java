@@ -30,19 +30,7 @@ public abstract class Bot implements Player {
 	
 	protected abstract int[][] chooseMove(char color);
 
-	@Deprecated
-	public int getRandomIntInRange(int lowerBound, int upperBound) {
-		if (lowerBound > upperBound) {
-			int tempLowerBound = lowerBound;
-			int tempUpperBound = upperBound;
-			lowerBound = tempUpperBound;
-			upperBound = tempLowerBound;
-		}
-
-		upperBound++;
-		int differenceInBounds = upperBound - lowerBound;
-		return (int) (Math.floor(Math.random() * differenceInBounds) + lowerBound);
-	}
+	
 
 	protected int count(char[][] board, char target) {
 		int count = 0;

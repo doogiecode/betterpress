@@ -1,8 +1,12 @@
 package betterpress.game.letterpress;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,11 +41,71 @@ public class GameContext {
 		this.window = window;
 		display = window.getBoardDisplay();
 	}
+	
+	public GameContext(BetterPressWindow window, File boardInput) {
+		this.window = window;
+		display = window.getBoardDisplay();
+		// Input board should be formatted as such:
+		// abdrw
+		// cvqpo
+		// lobty
+		// macgr
+		// boppe
+		//
+		// rbrr 
+		//  brrr
+		// rbb b
+		// brr  
+		// bbrrr
+		// 
+		// word1
+		// word2
+		// etc.
+		//
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(boardInput));
+			String nextline;
+			char[][] letterBoard = new char[5][5];
+			char[][] colorBoard = new char[5][5];
+			int writeIndex = 0;
+			while ((nextline = br.readLine()) != null && writeIndex < 5) {
+				letterBoard[writeIndex] = nextline.toCharArray();
+				++writeIndex;
+			}
+			
+			writeIndex = 0;
+			while ((nextline = br.readLine()) != null && writeIndex < 5) {
+				colorBoard[writeIndex] = nextline.toCharArray();
+				++writeIndex;
+			}
+			initializeDictionary();
+			this.board = new Board(letterBoard, colorBoard);
+			this.playableWords = WordGetter.getPlays(letterBoard, dictionary);
+			while ((nextline = br.readLine()) != null) {
+				if (dictionary.contains(nextline)) {
+					usedWords.add(nextline);
+				}
+			}
+			
+		} catch (FileNotFoundException e) {
+			System.out.println("Board input file not found.");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public void start() {
-		initializeDictionary();
-		board = new Board(true, false);
+		if (dictionary == null) {
+			initializeDictionary();
+		}
+			
+		if (board == null) {
+			board = new Board(false);
+		}
+		
 
+		
 		display.setLetterBoard(board.getLetterBoard(), 5, 5);
 		display.setColorBoard(board.getColorBoard(), 5, 5);
 
@@ -50,7 +114,6 @@ public class GameContext {
 		this.bluePlayer = new DefaultBot(this, board);
 		this.redPlayer = new DefaultBot(this, board);
 
-		// will currently fail because the Player objects are never initialized
 		char w = playOneGame();
 		String winner;
 		if (w == 'r') {
