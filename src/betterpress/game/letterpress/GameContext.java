@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,8 +43,25 @@ public class GameContext {
 	}
 	
 	public GameContext(BetterPressWindow window, File boardInput) {
+		this(boardInput);
 		this.window = window;
 		display = window.getBoardDisplay();
+	}
+	
+	/**
+	 * Constructor for use without gui.
+	 * @param boardFile
+	 */
+	public GameContext(File boardFile) {
+		initializeDictionary();
+		this.board = readBoardFile(this, boardFile);
+		if (board != null) {
+			playableWords = WordGetter.getPlays(board.getLetterBoard(), dictionary);
+		}
+	}
+	
+	public static Board readBoardFile(GameContext game, File boardFile) {
+		Board board = null;
 		// Input board should be formatted as such:
 		// abdrw
 		// cvqpo
@@ -63,37 +79,40 @@ public class GameContext {
 		// word2
 		// etc.
 		//
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(boardInput));
+		char[][] letterBoard = null;
+		char[][] colorBoard = null;
+		try (BufferedReader br = new BufferedReader(new FileReader(boardFile))) {
 			String nextline;
-			char[][] letterBoard = new char[5][5];
-			char[][] colorBoard = new char[5][5];
+			letterBoard = new char[5][5];
+			colorBoard = new char[5][5];
 			int writeIndex = 0;
 			while ((nextline = br.readLine()) != null && writeIndex < 5) {
 				letterBoard[writeIndex] = nextline.toCharArray();
 				++writeIndex;
 			}
-			
+
 			writeIndex = 0;
 			while ((nextline = br.readLine()) != null && writeIndex < 5) {
 				colorBoard[writeIndex] = nextline.toCharArray();
 				++writeIndex;
 			}
-			initializeDictionary();
-			this.board = new Board(letterBoard, colorBoard);
-			this.playableWords = WordGetter.getPlays(letterBoard, dictionary);
+			
 			while ((nextline = br.readLine()) != null) {
-				if (dictionary.contains(nextline)) {
-					usedWords.add(nextline);
+				if (game.getDictionary().contains(nextline)) {
+					game.getUsedWords().add(nextline);
 				}
 			}
-			
+
 		} catch (FileNotFoundException e) {
 			System.out.println("Board input file not found.");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		board = new Board(letterBoard, colorBoard);
+		
+		return board;
 	}
 
 	public void start() {
@@ -105,12 +124,15 @@ public class GameContext {
 			board = new Board(false);
 		}
 		
+		if(display != null) {
+			display.setLetterBoard(board.getLetterBoard());
+			display.setColorBoard(board.getColorBoard());
+		}
 
-		display.setLetterBoard(board.getLetterBoard());
-		display.setColorBoard(board.getColorBoard());
-
-		this.playableWords = WordGetter.getPlays(board.getLetterBoard(), dictionary);
-
+		if (playableWords == null) {
+			playableWords = WordGetter.getPlays(board.getLetterBoard(), dictionary);
+		}
+		
 		this.bluePlayer = new IntelligentBot(this, board);
 		this.redPlayer = new IntelligentBot(this, board);
 
@@ -138,8 +160,11 @@ public class GameContext {
 			removeSubPlayedWords(word);
 			// Update colorboard to represent move
 			board.setColorBoard(Board.colorTiles(board.getColorBoard(), moves, turn));
-			display.setColorBoard(board.getColorBoard());
-
+			
+			if (display != null) {
+				display.setColorBoard(board.getColorBoard());
+			}
+			
 			switchTurns();
 			if (DEBUG) {
 				window.printToTextArea("player " + turn + " played " + word);
@@ -269,7 +294,15 @@ public class GameContext {
 	public HashSet<String> getDictionary() {
 		return this.dictionary;
 	}
-
+	
+	public HashSet<String> getUsedWords() {
+		return usedWords;
+	}
+	
+	public Board getBoard() {
+		return board;
+	}
+	
 	public void setDictionary(HashSet<String> dict) {
 		this.dictionary = dict;
 	}
