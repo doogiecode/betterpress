@@ -1,14 +1,19 @@
 package betterpress.game.letterpress;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 import betterpress.game.ai.Player;
 import betterpress.game.ai.WordGetter;
 import betterpress.game.ai.bots.DefaultBot;
+import betterpress.game.ai.bots.IntelligentBot;
 import betterpress.ui.BetterPressWindow;
 import betterpress.ui.BoardDisplay;
 
@@ -37,20 +42,80 @@ public class GameContext {
 		this.window = window;
 		display = window.getBoardDisplay();
 	}
+	
+	public GameContext(BetterPressWindow window, File boardInput) {
+		this.window = window;
+		display = window.getBoardDisplay();
+		// Input board should be formatted as such:
+		// abdrw
+		// cvqpo
+		// lobty
+		// macgr
+		// boppe
+		//
+		// rbrr 
+		//  brrr
+		// rbb b
+		// brr  
+		// bbrrr
+		// 
+		// word1
+		// word2
+		// etc.
+		//
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(boardInput));
+			String nextline;
+			char[][] letterBoard = new char[5][5];
+			char[][] colorBoard = new char[5][5];
+			int writeIndex = 0;
+			while ((nextline = br.readLine()) != null && writeIndex < 5) {
+				letterBoard[writeIndex] = nextline.toCharArray();
+				++writeIndex;
+			}
+			
+			writeIndex = 0;
+			while ((nextline = br.readLine()) != null && writeIndex < 5) {
+				System.out.println("[GAME CONTEXT]" + Arrays.toString(nextline.toCharArray()));
+				colorBoard[writeIndex] = nextline.toCharArray();
+				++writeIndex;
+			}
+			initializeDictionary();
+			this.board = new Board(letterBoard, colorBoard);
+			this.playableWords = WordGetter.getPlays(letterBoard, dictionary);
+			while ((nextline = br.readLine()) != null) {
+				if (dictionary.contains(nextline)) {
+					usedWords.add(nextline);
+				}
+			}
+			
+		} catch (FileNotFoundException e) {
+			System.out.println("Board input file not found.");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public void start() {
-		initializeDictionary();
-		board = new Board(true, false);
+		if (dictionary == null) {
+			initializeDictionary();
+		}
+			
+		if (board == null) {
+			board = new Board(false);
+		}
+		
 
 		display.setLetterBoard(board.getLetterBoard());
 		display.setColorBoard(board.getColorBoard());
 
 		this.playableWords = WordGetter.getPlays(board.getLetterBoard(), dictionary);
 
-		this.bluePlayer = new DefaultBot(this, board);
-		this.redPlayer = new DefaultBot(this, board);
+		this.bluePlayer = new IntelligentBot(this, board);
+		this.redPlayer = new IntelligentBot(this, board);
 
-		// will currently fail because the Player objects are never initialized
+		this.turn = 'b'; // Blue goes first because.
 		char w = playOneGame();
 		String winner;
 		if (w == 'r') {
